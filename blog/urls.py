@@ -1,14 +1,14 @@
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('blogs/', views.BlogListView.as_view(), name='blogs'),
-    #path('blog/<pk>', views.BlogDetailView.as_view(), name='blog-detail'),
     re_path(r'^blog/(?P<pk>\d+)$', views.BlogDetailView.as_view(), name='blog-detail'),
     path('bloggers/', views.BloggerListView.as_view(), name='bloggers'),
-    re_path(r'^blogger/(?P<pk>\d+)$', views.blogger_detail_view, name='blogger-detail'),
-
-    #name identifies this particular url mapping, can use this name to reverse the mapper
+    path('blogger/<pk>', views.BlogsByAuthorView.as_view(), name='blogger-detail'),
+    path('blog/<int:pk>/comment', views.CommentCreate.as_view(), name='blog_add_comment'),
 
 ]
+
+#path('blog/<int:pk>/comment/', views.BlogCommentCreate.as_view(), name='blog_comment'),

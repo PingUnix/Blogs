@@ -1,8 +1,25 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 import uuid
 from django.urls import reverse
+
+
+
+class BlogAuthor(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    bio = models.TextField(max_length=516, help_text='input the detail here')
+
+    def get_absolute_url(self):
+        return reverse('blogger-detail', args=[str(self.id)])
+        #reverse function, parm 1 is the view's name, parms 2 is the
+
+    def __str__(self):
+        return self.user.username
+    class Meta:
+        permissions = (("can_access_author", "see all bloggers list"),)
 
 
 class Blog(models.Model):
@@ -49,12 +66,14 @@ class Comment(models.Model):
         return f'{self.blog.title} ({self.commentor})'
 
 
-class BlogAuthor(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    bio = models.TextField(max_length=516, help_text='innput the detail here')
+class VIP(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete= models.CASCADE,
+        related_name='vipuser'
 
-    def get_absolute_url(self):
-        return reverse('author-detail', args=[str(self.id)])
+    )
+    join_date = models.DateField(blank=True, null=True, default=date.today)
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user}'

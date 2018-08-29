@@ -1,11 +1,9 @@
 from django.contrib import admin
-from .models import Blog, Comment
+from .models import Blog, Comment, BlogAuthor, VIP
 
 # Register your models here.
 #admin.site.register(Blog)
 #admin.site.register(Comments)
-
-
 
 
 class CommentInline(admin.TabularInline):
@@ -29,8 +27,6 @@ class CommentAdmin(admin.ModelAdmin):
             'fields': ('comment_date', 'commentor')
         }),
     )
-
-
 admin.site.register(Comment, CommentAdmin)
 
 
@@ -49,8 +45,21 @@ class BlogAdmin(admin.ModelAdmin):
             'fields': ('publish_date', 'blogger')
         }),
     )
-
     inlines = [CommentInline]
 
-
 admin.site.register(Blog, BlogAdmin)
+
+class BlogAuthorAdmin(admin.ModelAdmin):
+    list_display = (
+        'user',
+        'bio',
+    )
+admin.site.register(BlogAuthor, BlogAuthorAdmin)
+
+
+class VIPAdmin(admin.ModelAdmin):
+    list_display = (
+        'user',
+        'join_date',
+    )
+admin.site.register(VIP, VIPAdmin)
