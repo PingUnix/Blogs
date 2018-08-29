@@ -1,6 +1,12 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>All Blog Home</h1>
+    <h1>All Blogs Home</h1>
     <p>welcome to blog home, a website developed by amazon</p>
+    <p>The blog has the following record counts:</p>
+        <ul>
+            <li><strong>Blogs:</strong> {{ num_of_blogs }}</li>
+            <li><strong>Comments:</strong> {{ num_of_comments }}</li>
+            <li><strong>Comments with censorship:</strong> {{ num_of_comments_with_censorship }}</li>
+        </ul>
 {% endblock %}

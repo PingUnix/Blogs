@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import  User
+from django.contrib.auth.models import User
 from datetime import date
 import uuid
 from django.urls import reverse
@@ -11,7 +11,7 @@ class Blog(models.Model):
     title = models.CharField(max_length=300)
     contents = models.CharField(max_length=65535)
     publish_date = models.DateField(null=True, blank=True,default=date.today())
-    blogger = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    blogger = models.ForeignKey(BlogAuthor, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         ordering = ['title']
@@ -47,3 +47,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.blog.title} ({self.commentor})'
+
+
+class BlogAuthor(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    bio = models.TextField(max_length=516, help_text='innput the detail here')
+
+    def get_absolute_url(self):
+        return reverse('author-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return self.user.username
